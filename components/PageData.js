@@ -37,11 +37,14 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'transparent',
+    paddingHorizontal: 30,
   },
   image: {
     flex: 0,
-    paddingBottom: 60,
+    paddingBottom: 20,
     alignItems: 'center',
+    marginTop: -20
   },
   title: {
     textAlign: 'center',
