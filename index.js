@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { View, ScrollView, Dimensions, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { Component, PropTypes } from 'react';
+import { View, ScrollView, Dimensions, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import tinycolor from 'tinycolor2';
 
 import PageData from './components/PageData';
@@ -40,11 +39,29 @@ export default class Onboarding extends Component {
     const { width, height } = Dimensions.get('window');
     const { pages, bottomOverlay, showSkip, showNext, showDone } = this.props;
     const currentPage = pages[this.state.currentPage] || pages[0];
-    const { backgroundColor } = currentPage;
+    const { backgroundColor, backgroundImage } = currentPage;
     const isLight = tinycolor(backgroundColor).getBrightness() > 180;
+    const Wrapper = backgroundImage ? Image : View;
+
+    let props;
+
+    if (backgroundImage) {
+      props = {
+        ...props,
+        source: {
+          uri: backgroundImage,
+        },
+      };
+    }
 
     return (
-      <View style={{ flex: 1, backgroundColor: backgroundColor, justifyContent: 'center' }}>
+      <Wrapper {...props} style={
+        {
+          flex: 1,
+          backgroundColor: backgroundColor,
+          justifyContent: 'center'
+        }
+      }>
         <ScrollView
           ref="scroll"
           pagingEnabled={true}
@@ -76,17 +93,18 @@ export default class Onboarding extends Component {
           onEnd={this.props.onEnd}
           onNext={this.goNext}
         />
-      </View>
+      </Wrapper>
     );
   }
 }
 
 Onboarding.propTypes = {
   pages: PropTypes.arrayOf(PropTypes.shape({
-    backgroundColor: PropTypes.string.isRequired,
-    image: PropTypes.element.isRequired,
-    title: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
+    backgroundColor: PropTypes.string,
+    backgroundImage: PropTypes.string,
+    image: PropTypes.element,
+    title: PropTypes.string,
+    subtitle: PropTypes.string,
   })).isRequired,
   bottomOverlay: PropTypes.bool,
   showSkip: PropTypes.bool,
